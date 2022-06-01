@@ -95,6 +95,7 @@ return CINT3c2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_3c2e1, 0);
 } // int3c2e_ip1_spinor
 ALL_CINT(int3c2e_ip1)
 ALL_CINT_FORTRAN_(int3c2e_ip1)
+INTEGRAL_NAME_ALIAS(int3c2e_ip1, int3c2e_ip100)
 /* (i j|R12 |NABLA k) */
 void CINTgout2e_int3c2e_ip2(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -176,6 +177,7 @@ return CINT3c2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_3c2e1, 0);
 } // int3c2e_ip2_spinor
 ALL_CINT(int3c2e_ip2)
 ALL_CINT_FORTRAN_(int3c2e_ip2)
+INTEGRAL_NAME_ALIAS(int3c2e_ip2, int3c2e_ip001)
 /* (P* i DOT P j|R12 |k) */
 void CINTgout2e_int3c2e_pvp1(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -388,6 +390,7 @@ return 0;
 }
 ALL_CINT(int2c2e_ip1)
 ALL_CINT_FORTRAN_(int2c2e_ip1)
+INTEGRAL_NAME_ALIAS(int2c2e_ip1, int2c2e_ip10)
 /* (i |R12 |NABLA j) */
 static void CINTgout2e_int2c2e_ip2(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -466,6 +469,7 @@ return 0;
 }
 ALL_CINT(int2c2e_ip2)
 ALL_CINT_FORTRAN_(int2c2e_ip2)
+INTEGRAL_NAME_ALIAS(int2c2e_ip2, int2c2e_ip01)
 /* (G i j|R12 |k) */
 void CINTgout2e_int3c2e_ig1(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -971,6 +975,7 @@ return CINT3c2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_3c2e1, 0);
 } // int3c2e_ipip1_spinor
 ALL_CINT(int3c2e_ipip1)
 ALL_CINT_FORTRAN_(int3c2e_ipip1)
+INTEGRAL_NAME_ALIAS(int3c2e_ipip1, int3c2e_ip200)
 /* (i j|R12 |NABLA NABLA k) */
 void CINTgout2e_int3c2e_ipip2(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -1052,6 +1057,7 @@ return CINT3c2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_3c2e1, 0);
 } // int3c2e_ipip2_spinor
 ALL_CINT(int3c2e_ipip2)
 ALL_CINT_FORTRAN_(int3c2e_ipip2)
+INTEGRAL_NAME_ALIAS(int3c2e_ipip2, int3c2e_ip002)
 /* (NABLA i NABLA j|R12 |k) */
 void CINTgout2e_int3c2e_ipvip1(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -1133,6 +1139,7 @@ return CINT3c2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_3c2e1, 0);
 } // int3c2e_ipvip1_spinor
 ALL_CINT(int3c2e_ipvip1)
 ALL_CINT_FORTRAN_(int3c2e_ipvip1)
+INTEGRAL_NAME_ALIAS(int3c2e_ipvip1, int3c2e_ip110)
 /* (NABLA i j|R12 |NABLA k) */
 void CINTgout2e_int3c2e_ip1ip2(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -1214,6 +1221,7 @@ return CINT3c2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_3c2e1, 0);
 } // int3c2e_ip1ip2_spinor
 ALL_CINT(int3c2e_ip1ip2)
 ALL_CINT_FORTRAN_(int3c2e_ip1ip2)
+INTEGRAL_NAME_ALIAS(int3c2e_ip1ip2, int3c2e_ip101)
 /* (NABLA NABLA i |R12 |j) */
 static void CINTgout2e_int2c2e_ipip1(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -1292,6 +1300,7 @@ return 0;
 }
 ALL_CINT(int2c2e_ipip1)
 ALL_CINT_FORTRAN_(int2c2e_ipip1)
+INTEGRAL_NAME_ALIAS(int2c2e_ipip1, int2c2e_ip20)
 /* (NABLA i |R12 |NABLA j) */
 static void CINTgout2e_int2c2e_ip1ip2(double *gout,
 double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
@@ -1370,3 +1379,4 @@ return 0;
 }
 ALL_CINT(int2c2e_ip1ip2)
 ALL_CINT_FORTRAN_(int2c2e_ip1ip2)
+INTEGRAL_NAME_ALIAS(int2c2e_ip1ip2, int2c2e_ip11)

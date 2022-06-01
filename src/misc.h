@@ -81,3 +81,21 @@ FINT c##NAME(double *out, FINT *shls, FINT *atm, FINT natm, \
 #define ALL_CINT1E(NAME)
 
 #endif  // WITH_CINT2_INTERFACE
+
+// Xing - integral name alias
+#define INTEGRAL_NAME_ALIAS(NAME, ALIAS) \
+void ALIAS##_optimizer(CINTOpt **opt, FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env) { \
+    NAME##_optimizer(opt, atm, natm, bas, nbas, env); \
+} \
+CACHE_SIZE_T ALIAS##_cart(double *out, FINT *dims, FINT *shls, \
+        FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env, CINTOpt *opt, double *cache) { \
+    return NAME##_cart(out, dims, shls, atm, natm, bas, nbas, env, opt, cache); \
+} \
+CACHE_SIZE_T ALIAS##_sph(double *out, FINT *dims, FINT *shls, \
+        FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env, CINTOpt *opt, double *cache) { \
+    return NAME##_sph(out, dims, shls, atm, natm, bas, nbas, env, opt, cache); \
+} \
+CACHE_SIZE_T ALIAS##_spinor(double *out, FINT *dims, FINT *shls, \
+        FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env, CINTOpt *opt, double *cache) { \
+    return NAME##_spinor(out, dims, shls, atm, natm, bas, nbas, env, opt, cache); \
+}
