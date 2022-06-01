@@ -95,7 +95,7 @@ CACHE_SIZE_T ALIAS##_sph(double *out, FINT *dims, FINT *shls, \
         FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env, CINTOpt *opt, double *cache) { \
     return NAME##_sph(out, dims, shls, atm, natm, bas, nbas, env, opt, cache); \
 } \
-CACHE_SIZE_T ALIAS##_spinor(double *out, FINT *dims, FINT *shls, \
+CACHE_SIZE_T ALIAS##_spinor(double complex *out, FINT *dims, FINT *shls, \
         FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env, CINTOpt *opt, double *cache) { \
     return NAME##_spinor(out, dims, shls, atm, natm, bas, nbas, env, opt, cache); \
 }
