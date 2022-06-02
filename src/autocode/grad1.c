@@ -68,7 +68,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipovlp_spinor
 ALL_CINT1E(int1e_ipovlp)
 ALL_CINT1E_FORTRAN_(int1e_ipovlp)
-INTEGRAL_NAME_ALIAS(int1e_ipovlp, int1e_ovlp_ip10)
+INTEGRAL_NAME_ALIAS(int1e_ipovlp, int1e_ovlp_dr10)
 /* <i|OVLP |NABLA j> */
 void CINTgout1e_int1e_ovlpip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -123,7 +123,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ovlpip_spinor
 ALL_CINT1E(int1e_ovlpip)
 ALL_CINT1E_FORTRAN_(int1e_ovlpip)
-INTEGRAL_NAME_ALIAS(int1e_ovlpip, int1e_ovlp_ip01)
+INTEGRAL_NAME_ALIAS(int1e_ovlpip, int1e_ovlp_dr01)
 /* <NABLA i|OVLP |P DOT P j> */
 void CINTgout1e_int1e_ipkin(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -217,7 +217,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipkin_spinor
 ALL_CINT1E(int1e_ipkin)
 ALL_CINT1E_FORTRAN_(int1e_ipkin)
-INTEGRAL_NAME_ALIAS(int1e_ipkin, int1e_kin_ip10)
+INTEGRAL_NAME_ALIAS(int1e_ipkin, int1e_kin_dr10)
 /* <i|OVLP |P DOT P NABLA j> */
 void CINTgout1e_int1e_kinip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -311,7 +311,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_kinip_spinor
 ALL_CINT1E(int1e_kinip)
 ALL_CINT1E_FORTRAN_(int1e_kinip)
-INTEGRAL_NAME_ALIAS(int1e_kinip, int1e_kin_ip01)
+INTEGRAL_NAME_ALIAS(int1e_kinip, int1e_kin_dr01)
 /* <NABLA i|NUC |j> */
 void CINTgout1e_int1e_ipnuc(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -370,7 +370,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 2);
 } // int1e_ipnuc_spinor
 ALL_CINT1E(int1e_ipnuc)
 ALL_CINT1E_FORTRAN_(int1e_ipnuc)
-INTEGRAL_NAME_ALIAS(int1e_ipnuc, int1e_nuc_ip10)
+INTEGRAL_NAME_ALIAS(int1e_ipnuc, int1e_nuc_dr10)
 /* <NABLA i|RINV |j> */
 void CINTgout1e_int1e_iprinv(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -429,7 +429,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 1);
 } // int1e_iprinv_spinor
 ALL_CINT1E(int1e_iprinv)
 ALL_CINT1E_FORTRAN_(int1e_iprinv)
-INTEGRAL_NAME_ALIAS(int1e_iprinv, int1e_rinv_ip10)
+INTEGRAL_NAME_ALIAS(int1e_iprinv, int1e_rinv_dr10)
 /* <NABLA SIGMA DOT P i|NUC |SIGMA DOT P j> */
 void CINTgout1e_int1e_ipspnucsp(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;

@@ -91,7 +91,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipipovlp_spinor
 ALL_CINT1E(int1e_ipipovlp)
 ALL_CINT1E_FORTRAN_(int1e_ipipovlp)
-INTEGRAL_NAME_ALIAS(int1e_ipipovlp, int1e_ovlp_ip20)
+INTEGRAL_NAME_ALIAS(int1e_ipipovlp, int1e_ovlp_dr20)
 /* <NABLA i|OVLP |NABLA j> */
 void CINTgout1e_int1e_ipovlpip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -168,7 +168,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipovlpip_spinor
 ALL_CINT1E(int1e_ipovlpip)
 ALL_CINT1E_FORTRAN_(int1e_ipovlpip)
-INTEGRAL_NAME_ALIAS(int1e_ipovlpip, int1e_ovlp_ip11)
+INTEGRAL_NAME_ALIAS(int1e_ipovlpip, int1e_ovlp_dr11)
 /* <NABLA NABLA i|P DOT P |j> */
 void CINTgout1e_int1e_ipipkin(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -344,7 +344,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipipkin_spinor
 ALL_CINT1E(int1e_ipipkin)
 ALL_CINT1E_FORTRAN_(int1e_ipipkin)
-INTEGRAL_NAME_ALIAS(int1e_ipipkin, int1e_kin_ip20)
+INTEGRAL_NAME_ALIAS(int1e_ipipkin, int1e_kin_dr20)
 /* <NABLA i|P DOT P |NABLA j> */
 void CINTgout1e_int1e_ipkinip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -520,7 +520,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipkinip_spinor
 ALL_CINT1E(int1e_ipkinip)
 ALL_CINT1E_FORTRAN_(int1e_ipkinip)
-INTEGRAL_NAME_ALIAS(int1e_ipkinip, int1e_kin_ip11)
+INTEGRAL_NAME_ALIAS(int1e_ipkinip, int1e_kin_dr11)
 /* <NABLA NABLA i|NUC |j> */
 void CINTgout1e_int1e_ipipnuc(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -601,7 +601,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 2);
 } // int1e_ipipnuc_spinor
 ALL_CINT1E(int1e_ipipnuc)
 ALL_CINT1E_FORTRAN_(int1e_ipipnuc)
-INTEGRAL_NAME_ALIAS(int1e_ipipnuc, int1e_nuc_ip20)
+INTEGRAL_NAME_ALIAS(int1e_ipipnuc, int1e_nuc_dr20)
 /* <NABLA i|NUC |NABLA j> */
 void CINTgout1e_int1e_ipnucip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -682,7 +682,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 2);
 } // int1e_ipnucip_spinor
 ALL_CINT1E(int1e_ipnucip)
 ALL_CINT1E_FORTRAN_(int1e_ipnucip)
-INTEGRAL_NAME_ALIAS(int1e_ipnucip, int1e_nuc_ip11)
+INTEGRAL_NAME_ALIAS(int1e_ipnucip, int1e_nuc_dr11)
 /* <NABLA NABLA i|RINV |j> */
 void CINTgout1e_int1e_ipiprinv(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -763,7 +763,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 1);
 } // int1e_ipiprinv_spinor
 ALL_CINT1E(int1e_ipiprinv)
 ALL_CINT1E_FORTRAN_(int1e_ipiprinv)
-INTEGRAL_NAME_ALIAS(int1e_ipiprinv, int1e_rinv_ip20)
+INTEGRAL_NAME_ALIAS(int1e_ipiprinv, int1e_rinv_dr20)
 /* <NABLA i|RINV |NABLA j> */
 void CINTgout1e_int1e_iprinvip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -844,7 +844,7 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 1);
 } // int1e_iprinvip_spinor
 ALL_CINT1E(int1e_iprinvip)
 ALL_CINT1E_FORTRAN_(int1e_iprinvip)
-INTEGRAL_NAME_ALIAS(int1e_iprinvip, int1e_rinv_ip11)
+INTEGRAL_NAME_ALIAS(int1e_iprinvip, int1e_rinv_dr11)
 /* <k NABLA NABLA i|R12 |j l> : i,j \in electron 1; k,l \in electron 2
  * = (NABLA NABLA i j|R12 |k l) */
 void CINTgout2e_int2e_ipip1(double *gout,
@@ -927,7 +927,7 @@ return CINT2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_2e1, &c2s_sf_2e2)
 } // int2e_ipip1_spinor
 ALL_CINT(int2e_ipip1)
 ALL_CINT_FORTRAN_(int2e_ipip1)
-INTEGRAL_NAME_ALIAS(int2e_ipip1, int2e_ip2000)
+INTEGRAL_NAME_ALIAS(int2e_ipip1, int2e_dr2000)
 /* <k NABLA i|R12 |NABLA j l> : i,j \in electron 1; k,l \in electron 2
  * = (NABLA i NABLA j|R12 |k l) */
 void CINTgout2e_int2e_ipvip1(double *gout,
@@ -1010,7 +1010,7 @@ return CINT2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_2e1, &c2s_sf_2e2)
 } // int2e_ipvip1_spinor
 ALL_CINT(int2e_ipvip1)
 ALL_CINT_FORTRAN_(int2e_ipvip1)
-INTEGRAL_NAME_ALIAS(int2e_ipvip1, int2e_ip1100)
+INTEGRAL_NAME_ALIAS(int2e_ipvip1, int2e_dr1100)
 /* <NABLA k NABLA i|R12 |j l> : i,j \in electron 1; k,l \in electron 2
  * = (NABLA i j|R12 |NABLA k l) */
 void CINTgout2e_int2e_ip1ip2(double *gout,
@@ -1093,7 +1093,7 @@ return CINT2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_2e1, &c2s_sf_2e2)
 } // int2e_ip1ip2_spinor
 ALL_CINT(int2e_ip1ip2)
 ALL_CINT_FORTRAN_(int2e_ip1ip2)
-INTEGRAL_NAME_ALIAS(int2e_ip1ip2, int2e_ip1010)
+INTEGRAL_NAME_ALIAS(int2e_ip1ip2, int2e_dr1010)
 /* <P* NABLA NABLA i|NUC DOT P |j> */
 void CINTgout1e_int1e_ipippnucp(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -3040,7 +3040,7 @@ return CINT2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_2e1, &c2s_sf_2e2)
 } // int2e_ipip1ipip2_spinor
 ALL_CINT(int2e_ipip1ipip2)
 ALL_CINT_FORTRAN_(int2e_ipip1ipip2)
-INTEGRAL_NAME_ALIAS(int2e_ipip1ipip2, int2e_ip2020)
+INTEGRAL_NAME_ALIAS(int2e_ipip1ipip2, int2e_dr2020)
 /* <NABLA k NABLA i|R12 |NABLA j NABLA l> : i,j \in electron 1; k,l \in electron 2
  * = (NABLA i NABLA j|R12 |NABLA k NABLA l) */
 void CINTgout2e_int2e_ipvip1ipvip2(double *gout,
@@ -3363,4 +3363,4 @@ return CINT2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_2e1, &c2s_sf_2e2)
 } // int2e_ipvip1ipvip2_spinor
 ALL_CINT(int2e_ipvip1ipvip2)
 ALL_CINT_FORTRAN_(int2e_ipvip1ipvip2)
-INTEGRAL_NAME_ALIAS(int2e_ipvip1ipvip2, int2e_ip1111)
+INTEGRAL_NAME_ALIAS(int2e_ipvip1ipvip2, int2e_dr1111)
