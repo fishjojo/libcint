@@ -217,6 +217,10 @@
 )
 
 (gen-cint "deriv3.c"
+  '("int1e_ipipipovlp"          ( nabla nabla nabla \|))
+  '("int1e_ipipovlpip"          ( nabla nabla \| nabla))
+  '("int1e_ipovlpipip"          ( nabla \| nabla nabla))
+  '("int1e_ovlpipipip"          ( \| nabla nabla nabla))
   '("int1e_ipipipnuc"           ( nabla nabla nabla \| nuc \| ))
   '("int1e_ipipiprinv"          ( nabla nabla nabla \| rinv \| ))
   '("int1e_ipipnucip"           ( nabla nabla \| nuc \| nabla ))
