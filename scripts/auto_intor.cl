@@ -229,6 +229,10 @@
   '("int1e_ipipkinip"           ( .5 nabla nabla \| p dot p \| nabla ))
   '("int1e_ipkinipip"           ( .5 nabla \| p dot p \| nabla nabla ))
   '("int1e_kinipipip"           ( .5 \| p dot p \| nabla nabla nabla ))
+  '("int1e_ipnucipip"           ( nabla \| nuc \| nabla nabla ))
+  '("int1e_nucipipip"           ( \| nuc \| nabla nabla nabla ))
+  '("int1e_iprinvipip"           ( nabla \| rinv \| nabla nabla ))
+  '("int1e_rinvipipip"           ( \| rinv \| nabla nabla nabla ))
 )
 
 (gen-cint "int1e_grids1.c"
