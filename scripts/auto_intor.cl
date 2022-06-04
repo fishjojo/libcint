@@ -231,8 +231,14 @@
   '("int1e_kinipipip"           ( .5 \| p dot p \| nabla nabla nabla ))
   '("int1e_ipnucipip"           ( nabla \| nuc \| nabla nabla ))
   '("int1e_nucipipip"           ( \| nuc \| nabla nabla nabla ))
-  '("int1e_iprinvipip"           ( nabla \| rinv \| nabla nabla ))
-  '("int1e_rinvipipip"           ( \| rinv \| nabla nabla nabla ))
+  '("int1e_iprinvipip"          ( nabla \| rinv \| nabla nabla ))
+  '("int1e_rinvipipip"          ( \| rinv \| nabla nabla nabla ))
+  '("int2e_dr3000"              ( nabla nabla nabla \, \| \, ))
+  '("int2e_dr2100"              ( nabla nabla \, nabla \| \, ))
+  '("int2e_dr1200"              ( nabla \, nabla nabla \| \, ))
+  '("int2e_dr0030"              ( \, \| nabla nabla nabla \, ))
+  '("int2e_dr0021"              ( \, \| nabla nabla \, nabla ))
+  '("int2e_dr0012"              ( \, \| nabla \, nabla nabla ))
 )
 
 (gen-cint "int1e_grids1.c"
