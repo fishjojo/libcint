@@ -239,6 +239,10 @@
   '("int2e_dr0030"              ( \, \| nabla nabla nabla \, ))
   '("int2e_dr0021"              ( \, \| nabla nabla \, nabla ))
   '("int2e_dr0012"              ( \, \| nabla \, nabla nabla ))
+  '("int2e_dr2010"              ( nabla nabla \, \| nabla \, ))
+  '("int2e_dr1020"              ( nabla \, \| nabla nabla \, ))
+  '("int2e_dr1110"              ( nabla \, nabla \| nabla \, ))
+  '("int2e_dr1011"              ( nabla \, \| nabla \, nabla ))
 )
 
 (gen-cint "int1e_grids1.c"
