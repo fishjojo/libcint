@@ -3040,7 +3040,6 @@ return CINT2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_2e1, &c2s_sf_2e2)
 } // int2e_ipip1ipip2_spinor
 ALL_CINT(int2e_ipip1ipip2)
 ALL_CINT_FORTRAN_(int2e_ipip1ipip2)
-INTEGRAL_NAME_ALIAS(int2e_ipip1ipip2, int2e_dr2020)
 /* <NABLA k NABLA i|R12 |NABLA j NABLA l> : i,j \in electron 1; k,l \in electron 2
  * = (NABLA i NABLA j|R12 |NABLA k NABLA l) */
 void CINTgout2e_int2e_ipvip1ipvip2(double *gout,
@@ -3363,4 +3362,3 @@ return CINT2e_spinor_drv(out, dims, &envs, opt, cache, &c2s_sf_2e1, &c2s_sf_2e2)
 } // int2e_ipvip1ipvip2_spinor
 ALL_CINT(int2e_ipvip1ipvip2)
 ALL_CINT_FORTRAN_(int2e_ipvip1ipvip2)
-INTEGRAL_NAME_ALIAS(int2e_ipvip1ipvip2, int2e_dr1111)
