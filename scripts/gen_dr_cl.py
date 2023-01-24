@@ -5,12 +5,12 @@ INT1E = {
     'int1e_kin'     : r'( 0.5 \| p dot p )',
     'int1e_nuc'     : r'( \| nuc \| )',
     'int1e_rinv'    : r'( \| rinv \| )',
+    'int2c2e'       : r'( \| r12 \| )',
 }
 
 INT2E = {
-    'int2e'         : '( \, \| \, )',
+    'int2e'         : r'( \, \| \, )',
 }
-
 
 def int1e_gen_dr(order):
     string = ''
