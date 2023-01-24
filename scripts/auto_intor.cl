@@ -237,16 +237,6 @@
   '("int1e_nucipipip"           ( \| nuc \| nabla nabla nabla ))
   '("int1e_iprinvipip"          ( nabla \| rinv \| nabla nabla ))
   '("int1e_rinvipipip"          ( \| rinv \| nabla nabla nabla ))
-  '("int2e_dr3000"              ( nabla nabla nabla \, \| \, ))
-  '("int2e_dr2100"              ( nabla nabla \, nabla \| \, ))
-  '("int2e_dr1200"              ( nabla \, nabla nabla \| \, ))
-  '("int2e_dr0030"              ( \, \| nabla nabla nabla \, ))
-  '("int2e_dr0021"              ( \, \| nabla nabla \, nabla ))
-  '("int2e_dr0012"              ( \, \| nabla \, nabla nabla ))
-  '("int2e_dr2010"              ( nabla nabla \, \| nabla \, ))
-  '("int2e_dr1020"              ( nabla \, \| nabla nabla \, ))
-  '("int2e_dr1110"              ( nabla \, nabla \| nabla \, ))
-  '("int2e_dr1011"              ( nabla \, \| nabla \, nabla ))
 )
 
 (gen-cint "deriv4.c"
