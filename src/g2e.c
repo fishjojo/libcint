@@ -1711,11 +1711,12 @@ void CINTg0_2e_il2d4d(double *g, struct _BC *bc, const CINTEnvVars *envs)
 /*
  * g[i,k,l,j] = < ik | lj > = ( i j | k l )
  */
-FINT CINTg0_2e(double *g, const double fac, const CINTEnvVars *envs)
+FINT CINTg0_2e(double *g, const CINTEnvVars *envs)
 {
         FINT irys;
-        const double aij = envs->aij;
-        const double akl = envs->akl;
+        FINT nroots = envs->nrys_roots;
+        double aij = envs->ai[0] + envs->aj[0];
+        double akl = envs->ak[0] + envs->al[0];
         double a0, a1, fac1, x;
         double u[MXRYSROOTS];
         double *w = g + envs->g_size * 2; // ~ gz
@@ -1744,28 +1745,32 @@ FINT CINTg0_2e(double *g, const double fac, const CINTEnvVars *envs)
 
 #ifdef WITH_RANGE_COULOMB
         if (omega < 0) { // short-range part of range-separated Coulomb
-                // very small erfc() leads to ~0 weights
-                if (theta * x > envs->expcutoff) {
+                // FIXME:
+                // very small erfc() leads to ~0 weights. They can cause
+                // numerical issue in sr_rys_roots Use this cutoff as a
+                // temporary solution to avoid the numerical issue
+                double temp_cutoff = MIN(envs->expcutoff, EXPCUTOFF_SR - nroots);
+                if (theta * x > temp_cutoff) {
                         return 0;
                 }
-                CINTsr_rys_roots(envs->nrys_roots, x, sqrt(theta), u, w);
+                CINTsr_rys_roots(nroots, x, sqrt(theta), u, w);
         } else {
-                CINTrys_roots(envs->nrys_roots, x, u, w);
+                CINTrys_roots(nroots, x, u, w);
                 if (omega > 0) {
                         /* u[:] = tau^2 / (1 - tau^2)
                          * omega^2u^2 = a0 * tau^2 / (theta^-1 - tau^2)
                          * transform u[:] to theta^-1 tau^2 / (theta^-1 - tau^2)
                          * so the rest code can be reused.
                          */
-                        for (irys = 0; irys < envs->nrys_roots; irys++) {
+                        for (irys = 0; irys < nroots; irys++) {
                                 u[irys] /= u[irys] + 1 - u[irys] * theta;
                         }
                 }
         }
 #else
-        CINTrys_roots(envs->nrys_roots, x, u, w);
+        CINTrys_roots(nroots, x, u, w);
 #endif
-        fac1 = sqrt(a0 / (a1 * a1 * a1)) * fac;
+        fac1 = sqrt(a0 / (a1 * a1 * a1)) * envs->fac[0];
         if (envs->g_size == 1) {
                 g[0] = 1;
                 g[1] = 1;
@@ -1774,8 +1779,14 @@ FINT CINTg0_2e(double *g, const double fac, const CINTEnvVars *envs)
         }
 
         double u2, tmp1, tmp2, tmp3, tmp4, tmp5;
-        const double *rijrx = envs->rijrx;
-        const double *rklrx = envs->rklrx;
+        double rijrx[3];
+        double rklrx[3];
+        rijrx[0] = envs->rij[0] - envs->rx_in_rijrx[0];
+        rijrx[1] = envs->rij[1] - envs->rx_in_rijrx[1];
+        rijrx[2] = envs->rij[2] - envs->rx_in_rijrx[2];
+        rklrx[0] = envs->rkl[0] - envs->rx_in_rklrx[0];
+        rklrx[1] = envs->rkl[1] - envs->rx_in_rklrx[1];
+        rklrx[2] = envs->rkl[2] - envs->rx_in_rklrx[2];
         struct _BC bc;
         double *c00 = bc.c00;
         double *c0p = bc.c0p;
@@ -1783,7 +1794,7 @@ FINT CINTg0_2e(double *g, const double fac, const CINTEnvVars *envs)
         double *b10 = bc.b10;
         double *b01 = bc.b01;
 
-        for (irys = 0; irys < envs->nrys_roots; irys++, c00+=3, c0p+=3) {
+        for (irys = 0; irys < nroots; irys++, c00+=3, c0p+=3) {
                 /*
                  *u(irys) = t2/(1-t2)
                  *t2 = u(irys)/(1+u(irys))
@@ -1825,7 +1836,7 @@ void CINTnabla1i_2e(double *f, const double *g,
         const FINT dl = envs->g_stride_l;
         const FINT dj = envs->g_stride_j;
         const FINT nroots = envs->nrys_roots;
-        const double ai2 = -2 * envs->ai;
+        const double ai2 = -2 * envs->ai[0];
         DEF_GXYZ(const double, g, gx, gy, gz);
         DEF_GXYZ(double, f, fx, fy, fz);
 
@@ -1872,7 +1883,7 @@ void CINTnabla1j_2e(double *f, const double *g,
         const FINT dl = envs->g_stride_l;
         const FINT dj = envs->g_stride_j;
         const FINT nroots = envs->nrys_roots;
-        const double aj2 = -2 * envs->aj;
+        const double aj2 = -2 * envs->aj[0];
         DEF_GXYZ(const double, g, gx, gy, gz);
         DEF_GXYZ(double, f, fx, fy, fz);
 
@@ -1926,7 +1937,7 @@ void CINTnabla1k_2e(double *f, const double *g,
         const FINT dl = envs->g_stride_l;
         const FINT dj = envs->g_stride_j;
         const FINT nroots = envs->nrys_roots;
-        const double ak2 = -2 * envs->ak;
+        const double ak2 = -2 * envs->ak[0];
         DEF_GXYZ(const double, g, gx, gy, gz);
         DEF_GXYZ(double, f, fx, fy, fz);
 
@@ -1977,7 +1988,7 @@ void CINTnabla1l_2e(double *f, const double *g,
         const FINT dl = envs->g_stride_l;
         const FINT dj = envs->g_stride_j;
         const FINT nroots = envs->nrys_roots;
-        const double al2 = -2 * envs->al;
+        const double al2 = -2 * envs->al[0];
         DEF_GXYZ(const double, g, gx, gy, gz);
         DEF_GXYZ(double, f, fx, fy, fz);
 

@@ -24,6 +24,7 @@
 #define FLOCKE_EXTRA_ORDER_FOR_LP       24
 // For quadruple precision 0.063^36 < 2**-113
 #define FLOCKE_EXTRA_ORDER_FOR_QP       36
+#define THRESHOLD_ZERO  (DBL_EPSILON * 8)
 
 int _CINTdiagonalize(int n, double *diag, double *diag_off1, double *eig, double *vec);
 
@@ -3279,6 +3280,9 @@ static void shifted_jacobi_moments(int n, double t, double lower, double *mus)
 }
 */
 
+/*
+ * Note: t cannot be 0
+ */
 static void laguerre_moments(int n, double t, double lower,
                              double *alpha, double *beta, double *moments)
 {
@@ -3330,9 +3334,35 @@ static void laguerre_moments(int n, double t, double lower,
         }
 }
 
+static void naive_jacobi_moments(int n, double t, double lower, double *mus)
+{
+        int i, j, k;
+        double s;
+        double fmt[MXRYSROOTS * 2];
+        double *coef;
+        int *order;
+
+        fmt_erfc_like(fmt, t, lower, n - 1);
+
+        for (i = 0; i < n; i++) {
+                coef = JACOBI_COEF + i * (i + 1) / 2;
+                order = JACOBI_COEF_ORDER + i * (i + 1) / 2;
+                s = 0;
+                for (j = 0; j <= i; j++) {
+                        k = order[j];
+                        s += coef[k] * fmt[k];
+                }
+                mus[i] = s;
+        }
+}
+
 // Flocke's recipe JCP, 131, 064107
 static void flocke_jacobi_moments(int n, double t, double *mus)
 {
+        if (t < THRESHOLD_ZERO) {
+                return naive_jacobi_moments(n, t, 0., mus);
+        }
+
         double t_inv = .5 / t;
         double mu1 = 1.;//DBL_EPSILON; // can be arbitrary number != 0
         double mu2 = 0.;
@@ -3358,28 +3388,6 @@ static void flocke_jacobi_moments(int n, double t, double *mus)
         double norm = SQRTPIE4 * erf(tt) / tt / mu0;  // fmt[0]/mu0
         for (i = 0; i < n; i++) {
                 mus[i] *= norm;
-        }
-}
-
-static void naive_jacobi_moments(int n, double t, double lower, double *mus)
-{
-        int i, j, k;
-        double s;
-        double fmt[MXRYSROOTS * 2];
-        double *coef;
-        int *order;
-
-        fmt1_erfc_like(fmt, t, lower, n - 1);
-
-        for (i = 0; i < n; i++) {
-                coef = JACOBI_COEF + i * (i + 1) / 2;
-                order = JACOBI_COEF_ORDER + i * (i + 1) / 2;
-                s = 0;
-                for (j = 0; j <= i; j++) {
-                        k = order[j];
-                        s += coef[k] * fmt[k];
-                }
-                mus[i] = s;
         }
 }
 
@@ -3445,8 +3453,12 @@ static int rys_wheeler_partial(int n, double *alpha, double *beta, double *momen
                 if (b[i] < 1e-14) {
                         // very likely we will get numerical issues
                         if (!first_seen || b[i] < 0.) {
-                                fprintf(stderr, "libcint rys_wheeler singlur value n=%d i=%d b=%g\n",
+                                fprintf(stderr, "libcint rys_wheeler singular value n=%d i=%d b=%g\n",
                                         n, i, b[i]);
+                                for (i = 0; i < n; i++) {
+                                        roots[i] = 0;
+                                        weights[i] = 0;
+                                }
                                 return i;
                         }
                         first_seen = 0;
@@ -3514,9 +3526,35 @@ static void llaguerre_moments(int n, double t, double lower,
         }
 }
 
+static void lnaive_jacobi_moments(int n, double t, double lower, long double *mus)
+{
+        int i, j, k;
+        long double s;
+        long double fmt[MXRYSROOTS * 2];
+        long double *coef;
+        int *order;
+
+        fmt_lerfc_like(fmt, t, lower, n - 1);
+
+        for (i = 0; i < n; i++) {
+                coef = lJACOBI_COEF + i * (i + 1) / 2;
+                order = JACOBI_COEF_ORDER + i * (i + 1) / 2;
+                s = 0;
+                for (j = 0; j <= i; j++) {
+                        k = order[j];
+                        s += coef[k] * fmt[k];
+                }
+                mus[i] = s;
+        }
+}
+
 // Flocke's recipe JCP, 131, 064107
 static void lflocke_jacobi_moments(int n, double t, long double *mus)
 {
+        if (t < THRESHOLD_ZERO) {
+                return lnaive_jacobi_moments(n, t, 0., mus);
+        }
+
         long double t_inv = .5l / t;
         long double mu1 = 1.l;//DBL_EPSILON; // can be arbitrary number != 0
         long double mu2 = 0.l;
@@ -3542,28 +3580,6 @@ static void lflocke_jacobi_moments(int n, double t, long double *mus)
         long double norm = SQRTPIE4l * erfl(tt) / tt / mu0;  // fmt[0]/mu0
         for (i = 0; i < n; i++) {
                 mus[i] *= norm;
-        }
-}
-
-static void lnaive_jacobi_moments(int n, double t, double lower, long double *mus)
-{
-        int i, j, k;
-        long double s;
-        long double fmt[MXRYSROOTS * 2];
-        long double *coef;
-        int *order;
-
-        fmt1_lerfc_like(fmt, t, lower, n - 1);
-
-        for (i = 0; i < n; i++) {
-                coef = lJACOBI_COEF + i * (i + 1) / 2;
-                order = JACOBI_COEF_ORDER + i * (i + 1) / 2;
-                s = 0;
-                for (j = 0; j <= i; j++) {
-                        k = order[j];
-                        s += coef[k] * fmt[k];
-                }
-                mus[i] = s;
         }
 }
 
@@ -3624,8 +3640,12 @@ static int lrys_wheeler_partial(int n, long double *alpha, long double *beta, lo
                 if (b[i] < 1e-19) {
                         // very likely we will get numerical issues
                         if (!first_seen || b[i] < 0.) {
-                                fprintf(stderr, "libcint rys_wheeler singlur value n=%d i=%d b=%g\n",
+                                fprintf(stderr, "libcint lrys_wheeler singular value n=%d i=%d b=%g\n",
                                         n, i, (double)b[i]);
+                                for (i = 0; i < n; i++) {
+                                        roots[i] = 0;
+                                        weights[i] = 0;
+                                }
                                 return i;
                         }
                         first_seen = 0;
@@ -6164,9 +6184,35 @@ static void qlaguerre_moments(int n, double t, double lower,
         }
 }
 
+static void qnaive_jacobi_moments(int n, double t, double lower, __float128 *mus)
+{
+        int i, j, k;
+        __float128 s;
+        __float128 fmt[MXRYSROOTS * 2];
+        __float128 *coef;
+        int *order;
+
+        fmt_qerfc_like(fmt, t, lower, n - 1);
+
+        for (i = 0; i < n; i++) {
+                coef = qJACOBI_COEF + i * (i + 1) / 2;
+                order = JACOBI_COEF_ORDER + i * (i + 1) / 2;
+                s = 0;
+                for (j = 0; j <= i; j++) {
+                        k = order[j];
+                        s += coef[k] * fmt[k];
+                }
+                mus[i] = s;
+        }
+}
+
 // Flocke's recipe JCP, 131, 064107
 static void qflocke_jacobi_moments(int n, double t, __float128 *mus)
 {
+        if (t < THRESHOLD_ZERO) {
+                return qnaive_jacobi_moments(n, t, 0., mus);
+        }
+
         __float128 t_inv = .5q / t;
         __float128 mu1 = 1.q;//DBL_EPSILON; // can be arbitrary number != 0
         __float128 mu2 = 0.q;
@@ -6192,28 +6238,6 @@ static void qflocke_jacobi_moments(int n, double t, __float128 *mus)
         __float128 norm = SQRTPIE4q * erfq(tt) / tt / mu0;  // fmt[0]/mu0
         for (i = 0; i < n; i++) {
                 mus[i] *= norm;
-        }
-}
-
-static void qnaive_jacobi_moments(int n, double t, double lower, __float128 *mus)
-{
-        int i, j, k;
-        __float128 s;
-        __float128 fmt[MXRYSROOTS * 2];
-        __float128 *coef;
-        int *order;
-
-        fmt1_qerfc_like(fmt, t, lower, n - 1);
-
-        for (i = 0; i < n; i++) {
-                coef = qJACOBI_COEF + i * (i + 1) / 2;
-                order = JACOBI_COEF_ORDER + i * (i + 1) / 2;
-                s = 0;
-                for (j = 0; j <= i; j++) {
-                        k = order[j];
-                        s += coef[k] * fmt[k];
-                }
-                mus[i] = s;
         }
 }
 
@@ -6272,8 +6296,12 @@ static int qrys_wheeler_partial(int n, __float128 *alpha, __float128 *beta, __fl
                 if (b[i] < 1e-32) {
                         // very likely we will get numerical issues
                         if (!first_seen || b[i] < 0.) {
-                                fprintf(stderr, "libcint rys_wheeler singlur value n=%d i=%d b=%g\n",
+                                fprintf(stderr, "libcint qrys_wheeler singular value n=%d i=%d b=%g\n",
                                         n, i, (double)b[i]);
+                                for (i = 0; i < n; i++) {
+                                        roots[i] = 0;
+                                        weights[i] = 0;
+                                }
                                 return i;
                         }
                         first_seen = 0;

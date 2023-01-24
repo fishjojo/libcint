@@ -76,18 +76,19 @@ def gen_header():
     header = '#!/usr/bin/env clisp\n(load "gen-code.cl")\n'
     return header
 
-def write_to_file(order, filename, cfilename):
+def write_to_file(orders, filename, cfilename):
     content = gen_header()
     content += '\n(gen-cint \"' + cfilename +'\"\n'
-    content += int1e_gen_dr(order)
-    content += int2e_gen_dr(order)
+    for order in orders:
+        content += int1e_gen_dr(order)
+        content += int2e_gen_dr(order)
     content += ')'
     with open(filename, 'w') as f:
         f.write(content)
 
 
 if __name__ == '__main__':
-    order = 4
-    filename = 'auto_intor_dr.cl'
-    cfilename = 'deriv4.c'
-    write_to_file(order, filename, cfilename)
+    orders = [1,2,3,4]
+    filename = 'auto_intor_ad.cl'
+    cfilename = 'deriv_ad.c'
+    write_to_file(orders, filename, cfilename)

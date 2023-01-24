@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.5)
 project (cint C)
-set(cint_VERSION_MAJOR "4")
-set(cint_VERSION_MINOR "4")
-set(cint_VERSION_PATCH "1")
+set(cint_VERSION_MAJOR "5")
+set(cint_VERSION_MINOR "1")
+set(cint_VERSION_PATCH "8")
 set(cint_VERSION_TWEAK "0")
 set(cint_VERSION "${cint_VERSION_MAJOR}.${cint_VERSION_MINOR}.${cint_VERSION_PATCH}")
 set(cint_SOVERSION "${cint_VERSION_MAJOR}")
@@ -34,7 +34,7 @@ endif()
 
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O2 -DNDEBUG")
 
-cmake_policy(SET CMP0042 NEW) 
+cmake_policy(SET CMP0042 NEW)
 include(GNUInstallDirs)
 #set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -44,7 +44,9 @@ if(QUADMATH_FOUND)
   set(HAVE_QUADMATH_H 1 CACHE INTERNAL "Have QUADMATH")
 endif()
 
-find_package(BLAS REQUIRED)
+if(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREATER 3.12)
+  cmake_policy(SET CMP0075 NEW)
+endif()
 
 include(CheckFunctionExists)
 set(CMAKE_REQUIRED_INCLUDES math.h)
@@ -68,19 +70,20 @@ configure_file(
   "${PROJECT_SOURCE_DIR}/include/cint.h.in"
   "${PROJECT_BINARY_DIR}/include/cint.h")
 
-set(cintSrc 
+set(cintSrc
   src/c2f.c src/cart2sph.c src/cint1e.c src/cint2e.c src/cint_bas.c
   src/fblas.c src/g1e.c src/g2e.c src/misc.c src/optimizer.c
   src/fmt.c src/rys_wheeler.c src/eigh.c src/rys_roots.c
   src/cint2c2e.c src/g2c2e.c src/cint3c2e.c src/g3c2e.c
-  src/cint3c1e.c src/g3c1e.c src/breit.c src/cint4c1e.c src/g4c1e.c
+  src/cint3c1e.c src/g3c1e.c src/breit.c
   src/cint1e_a.c src/cint3c1e_a.c
   src/cint1e_grids.c src/g1e_grids.c
   src/autocode/breit1.c src/autocode/dkb.c src/autocode/gaunt1.c
   src/autocode/grad1.c src/autocode/grad2.c src/autocode/hess.c
   src/autocode/int3c1e.c src/autocode/int3c2e.c src/autocode/intor1.c
   src/autocode/intor2.c src/autocode/intor3.c src/autocode/intor4.c
-  src/autocode/deriv3.c src/autocode/deriv4.c src/autocode/int1e_grids1.c)
+  src/autocode/deriv3.c src/autocode/int1e_grids1.c
+  src/autocode/deriv4.c src/autocode/deriv_ad.c)
 
 #option(WITH_RANGE_COULOMB "Range separated Coulomb" on)
 if(WITH_RANGE_COULOMB)
@@ -105,8 +108,13 @@ if(WITH_GTG)
   set(cintSrc ${cintSrc} src/g2e_gtg.c src/cint2e_gtg.c src/cint3c2e_gtg.c
     src/cint2c2e_gtg.c)
   add_definitions(-DWITH_GTG)
-  message("Enabled WITH_GTG")
+  message("Enabled WITH_GTG. Note there are bugs in gtg type integrals")
 endif(WITH_GTG)
+
+if(WITH_4C1E)
+  set(cintSrc ${cintSrc} src/cint4c1e.c src/g4c1e.c)
+  message("Enabled WITH_4C1E. Note there are bugs in 4c1e integral functions")
+endif(WITH_4C1E)
 
 if(PYPZPX)
   add_definitions(-DPYPZPX)
@@ -158,7 +166,6 @@ set_target_properties(cint PROPERTIES
   VERSION ${cint_VERSION}
   SOVERSION ${cint_SOVERSION}
   LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-target_link_libraries(cint ${BLAS_LIBRARIES})
 if(QUADMATH_FOUND)
   target_link_libraries(cint quadmath)
 endif()
@@ -205,7 +212,7 @@ set(CPACK_PACKAGE_VENDOR "Qiming @sunqm Sun")
 set(CPACK_PACKAGE_CONTACT "https://github.com/sunqm/libcint")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/sunqm/libcint")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.rst")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/doc/libcint.CPack.txt")
 
 set(CPACK_PACKAGE_VERSION_MAJOR "${cint_VERSION_MAJOR}")

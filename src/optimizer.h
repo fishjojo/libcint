@@ -2,24 +2,7 @@
  * Copyright (C) 2013  Qiming Sun <osirpt.sun@gmail.com>
  */
 
-#include "config.h"
-
-#if !defined HAVE_DEFINED_CINTOPT_H
-#define HAVE_DEFINED_CINTOPT_H
-typedef struct {
-    double rij[3];
-    double eij;
-    double cceij;
-} PairData;
-typedef struct {
-    FINT **index_xyz_array; // LMAX1**4 pointers to index_xyz
-    FINT **non0ctr;
-    FINT **sortedidx;
-    FINT nbas;
-    double **log_max_coeff;
-    PairData **pairdata;  // NULL indicates not-initialized, NO_VALUE can be skipped
-} CINTOpt;
-#endif
+#include "cint.h"
 
 #define NOVALUE                 ((void *)0xffffffffffffffffuL)
 #define MAX_PGTO_FOR_PAIRDATA   2048
@@ -82,4 +65,24 @@ void CINTall_3c2e_gtg_optimizer(CINTOpt **opt, FINT *ng,
                                 FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env);
 void CINTall_2c2e_gtg_optimizer(CINTOpt **opt, FINT *ng,
                                 FINT *atm, FINT natm, FINT *bas, FINT nbas, double *env);
+#endif
+
+#ifndef HAVE_DEFINED_APPROX_LOG
+#define HAVE_DEFINED_APPROX_LOG
+#ifdef __X86__
+// little endian on x86
+typedef union {
+    double d;
+    unsigned short s[4];
+} type_IEEE754;
+// ~4 times faster than built-in log
+static inline double approx_log(double x)
+{
+        type_IEEE754 y;
+        y.d = x;
+        return ((y.s[3] >> 4) - 1023 + 1) * 0.693145751953125;
+}
+#else
+#define approx_log      log
+#endif
 #endif

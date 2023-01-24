@@ -152,7 +152,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipipipovlp_spinor
 ALL_CINT1E(int1e_ipipipovlp)
 ALL_CINT1E_FORTRAN_(int1e_ipipipovlp)
-INTEGRAL_NAME_ALIAS(int1e_ipipipovlp, int1e_ovlp_dr30)
 /* <NABLA NABLA i|OVLP |NABLA j> */
 void CINTgout1e_int1e_ipipovlpip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -291,7 +290,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipipovlpip_spinor
 ALL_CINT1E(int1e_ipipovlpip)
 ALL_CINT1E_FORTRAN_(int1e_ipipovlpip)
-INTEGRAL_NAME_ALIAS(int1e_ipipovlpip, int1e_ovlp_dr21)
 /* <NABLA i|OVLP |NABLA NABLA j> */
 void CINTgout1e_int1e_ipovlpipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -430,7 +428,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipovlpipip_spinor
 ALL_CINT1E(int1e_ipovlpipip)
 ALL_CINT1E_FORTRAN_(int1e_ipovlpipip)
-INTEGRAL_NAME_ALIAS(int1e_ipovlpipip, int1e_ovlp_dr12)
 /* <i|OVLP |NABLA NABLA NABLA j> */
 void CINTgout1e_int1e_ovlpipipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -569,7 +566,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ovlpipipip_spinor
 ALL_CINT1E(int1e_ovlpipipip)
 ALL_CINT1E_FORTRAN_(int1e_ovlpipipip)
-INTEGRAL_NAME_ALIAS(int1e_ovlpipipip, int1e_ovlp_dr03)
 /* <NABLA NABLA NABLA i|NUC |j> */
 void CINTgout1e_int1e_ipipipnuc(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -712,7 +708,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 2);
 } // int1e_ipipipnuc_spinor
 ALL_CINT1E(int1e_ipipipnuc)
 ALL_CINT1E_FORTRAN_(int1e_ipipipnuc)
-INTEGRAL_NAME_ALIAS(int1e_ipipipnuc, int1e_nuc_dr30)
 /* <NABLA NABLA NABLA i|RINV |j> */
 void CINTgout1e_int1e_ipipiprinv(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -855,7 +850,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 1);
 } // int1e_ipipiprinv_spinor
 ALL_CINT1E(int1e_ipipiprinv)
 ALL_CINT1E_FORTRAN_(int1e_ipipiprinv)
-INTEGRAL_NAME_ALIAS(int1e_ipipiprinv, int1e_rinv_dr30)
 /* <NABLA NABLA i|NUC |NABLA j> */
 void CINTgout1e_int1e_ipipnucip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -998,7 +992,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 2);
 } // int1e_ipipnucip_spinor
 ALL_CINT1E(int1e_ipipnucip)
 ALL_CINT1E_FORTRAN_(int1e_ipipnucip)
-INTEGRAL_NAME_ALIAS(int1e_ipipnucip, int1e_nuc_dr21)
 /* <NABLA NABLA i|RINV |NABLA j> */
 void CINTgout1e_int1e_ipiprinvip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -1141,7 +1134,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 1);
 } // int1e_ipiprinvip_spinor
 ALL_CINT1E(int1e_ipiprinvip)
 ALL_CINT1E_FORTRAN_(int1e_ipiprinvip)
-INTEGRAL_NAME_ALIAS(int1e_ipiprinvip, int1e_rinv_dr21)
 /* <NABLA NABLA NABLA i|P DOT P |j> */
 void CINTgout1e_int1e_ipipipkin(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -1547,7 +1539,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipipipkin_spinor
 ALL_CINT1E(int1e_ipipipkin)
 ALL_CINT1E_FORTRAN_(int1e_ipipipkin)
-INTEGRAL_NAME_ALIAS(int1e_ipipipkin, int1e_kin_dr30)
 /* <NABLA NABLA i|P DOT P |NABLA j> */
 void CINTgout1e_int1e_ipipkinip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -1953,7 +1944,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipipkinip_spinor
 ALL_CINT1E(int1e_ipipkinip)
 ALL_CINT1E_FORTRAN_(int1e_ipipkinip)
-INTEGRAL_NAME_ALIAS(int1e_ipipkinip, int1e_kin_dr21)
 /* <NABLA i|P DOT P |NABLA NABLA j> */
 void CINTgout1e_int1e_ipkinipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -2359,7 +2349,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_ipkinipip_spinor
 ALL_CINT1E(int1e_ipkinipip)
 ALL_CINT1E_FORTRAN_(int1e_ipkinipip)
-INTEGRAL_NAME_ALIAS(int1e_ipkinipip, int1e_kin_dr12)
 /* <i|P DOT P |NABLA NABLA NABLA j> */
 void CINTgout1e_int1e_kinipipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -2765,7 +2754,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 0);
 } // int1e_kinipipip_spinor
 ALL_CINT1E(int1e_kinipipip)
 ALL_CINT1E_FORTRAN_(int1e_kinipipip)
-INTEGRAL_NAME_ALIAS(int1e_kinipipip, int1e_kin_dr03)
 /* <NABLA i|NUC |NABLA NABLA j> */
 void CINTgout1e_int1e_ipnucipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -2908,7 +2896,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 2);
 } // int1e_ipnucipip_spinor
 ALL_CINT1E(int1e_ipnucipip)
 ALL_CINT1E_FORTRAN_(int1e_ipnucipip)
-INTEGRAL_NAME_ALIAS(int1e_ipnucipip, int1e_nuc_dr12)
 /* <i|NUC |NABLA NABLA NABLA j> */
 void CINTgout1e_int1e_nucipipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -3051,7 +3038,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 2);
 } // int1e_nucipipip_spinor
 ALL_CINT1E(int1e_nucipipip)
 ALL_CINT1E_FORTRAN_(int1e_nucipipip)
-INTEGRAL_NAME_ALIAS(int1e_nucipipip, int1e_nuc_dr03)
 /* <NABLA i|RINV |NABLA NABLA j> */
 void CINTgout1e_int1e_iprinvipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -3194,7 +3180,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 1);
 } // int1e_iprinvipip_spinor
 ALL_CINT1E(int1e_iprinvipip)
 ALL_CINT1E_FORTRAN_(int1e_iprinvipip)
-INTEGRAL_NAME_ALIAS(int1e_iprinvipip, int1e_rinv_dr12)
 /* <i|RINV |NABLA NABLA NABLA j> */
 void CINTgout1e_int1e_rinvipipip(double *gout, double *g, FINT *idx, CINTEnvVars *envs, FINT gout_empty) {
 FINT nf = envs->nf;
@@ -3337,7 +3322,6 @@ return CINT1e_spinor_drv(out, dims, &envs, cache, &c2s_sf_1e, 1);
 } // int1e_rinvipipip_spinor
 ALL_CINT1E(int1e_rinvipipip)
 ALL_CINT1E_FORTRAN_(int1e_rinvipipip)
-INTEGRAL_NAME_ALIAS(int1e_rinvipipip, int1e_rinv_dr03)
 /* <k NABLA NABLA NABLA i|R12 |j l> : i,j \in electron 1; k,l \in electron 2
  * = (NABLA NABLA NABLA i j|R12 |k l) */
 void CINTgout2e_int2e_dr3000(double *gout,

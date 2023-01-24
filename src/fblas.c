@@ -10,9 +10,9 @@
 
 #define OF_CMPLX        2
 
-void CINTdset0(const FINT n, double *x)
+void CINTdset0(FINT n, double *x)
 {
-        size_t i;
+        FINT i;
         for (i = 0; i < n; i++) {
                 x[i] = 0;
         }
@@ -22,8 +22,7 @@ void CINTdset0(const FINT n, double *x)
 /*
  * v = a * x + y
  */
-void CINTdaxpy2v(const FINT n, const double a,
-                 const double *x, const double *y, double *v)
+void CINTdaxpy2v(FINT n, double a, double *x, double *y, double *v)
 {
         //cblas_dcopy(n, y, 1, v, 1);
         //cblas_daxpy(n, a, x, 1, v, 1);
@@ -36,44 +35,82 @@ void CINTdaxpy2v(const FINT n, const double a,
 /*
  * a[m,n] -> a_t[n,m]
  */
-void CINTdmat_transpose(double *a_t, const double *a, const FINT m, const FINT n)
+void CINTdmat_transpose(double *a_t, double *a, FINT m, FINT n)
 {
         FINT i, j, k;
-        double *pa1, *pa2, *pa3;
 
         for (j = 0; j < n-3; j+=4) {
-                pa1 = a_t + m;
-                pa2 = pa1 + m;
-                pa3 = pa2 + m;
-                for (i = 0, k = j; i < m; i++, k+=n) {
-                        a_t[i] = a[k+0];
-                        pa1[i] = a[k+1];
-                        pa2[i] = a[k+2];
-                        pa3[i] = a[k+3];
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[(j+0)*m+i] = a[i*n+j+0];
+                        a_t[(j+1)*m+i] = a[i*n+j+1];
+                        a_t[(j+2)*m+i] = a[i*n+j+2];
+                        a_t[(j+3)*m+i] = a[i*n+j+3];
                 }
-                a_t += m * 4;
         }
 
         switch (n-j) {
         case 1:
-                for (i = 0, k = j; i < m; i++, k+=n) {
-                        a_t[i] = a[k];
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[j*m+i] = a[i*n+j];
                 }
                 break;
         case 2:
-                pa1 = a_t + m;
-                for (i = 0, k = j; i < m; i++, k+=n) {
-                        a_t[i] = a[k+0];
-                        pa1[i] = a[k+1];
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[(j+0)*m+i] = a[i*n+j+0];
+                        a_t[(j+1)*m+i] = a[i*n+j+1];
                 }
                 break;
         case 3:
-                pa1 = a_t + m;
-                pa2 = pa1 + m;
-                for (i = 0, k = j; i < m; i++, k+=n) {
-                        a_t[i] = a[k+0];
-                        pa1[i] = a[k+1];
-                        pa2[i] = a[k+2];
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[(j+0)*m+i] = a[i*n+j+0];
+                        a_t[(j+1)*m+i] = a[i*n+j+1];
+                        a_t[(j+2)*m+i] = a[i*n+j+2];
+                }
+                break;
+        }
+}
+
+/*
+ * a_t[n,m] += a[m,n]
+ */
+void CINTdplus_transpose(double *a_t, double *a, FINT m, FINT n)
+{
+        FINT i, j, k;
+
+        for (j = 0; j < n-3; j+=4) {
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[(j+0)*m+i] += a[i*n+j+0];
+                        a_t[(j+1)*m+i] += a[i*n+j+1];
+                        a_t[(j+2)*m+i] += a[i*n+j+2];
+                        a_t[(j+3)*m+i] += a[i*n+j+3];
+                }
+        }
+
+        switch (n-j) {
+        case 1:
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[j*m+i] += a[i*n+j];
+                }
+                break;
+        case 2:
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[(j+0)*m+i] += a[i*n+j+0];
+                        a_t[(j+1)*m+i] += a[i*n+j+1];
+                }
+                break;
+        case 3:
+#pragma GCC ivdep
+                for (i = 0; i < m; i++) {
+                        a_t[(j+0)*m+i] += a[i*n+j+0];
+                        a_t[(j+1)*m+i] += a[i*n+j+1];
+                        a_t[(j+2)*m+i] += a[i*n+j+2];
                 }
                 break;
         }
@@ -82,8 +119,7 @@ void CINTdmat_transpose(double *a_t, const double *a, const FINT m, const FINT n
 /*
  * a[m,n] -> a_t[n,m]
  */
-void CINTzmat_transpose(double complex *a_t, const double complex *a,
-                        const FINT m, const FINT n)
+void CINTzmat_transpose(double complex *a_t, double complex *a, FINT m, FINT n)
 {
         FINT i, j;
 
@@ -111,8 +147,7 @@ void CINTzmat_transpose(double complex *a_t, const double complex *a,
         }
 }
 
-void CINTzmat_dagger(double complex *a_t, const double complex *a,
-                     const FINT m, const FINT n)
+void CINTzmat_dagger(double complex *a_t, double complex *a, FINT m, FINT n)
 {
         FINT i, j;
 
@@ -123,3 +158,63 @@ void CINTzmat_dagger(double complex *a_t, const double complex *a,
         }
 }
 
+void CINTdgemm_NN1(FINT m, FINT n, FINT k,
+                   double *a, double *b, double *c, FINT ldc)
+{
+        FINT i, j, kp;
+        double bi;
+        for (j = 0; j < n; j++) {
+                for (i = 0; i < m; i++) {
+                        c[i+ldc*j] = 0;
+                }
+                for (kp = 0; kp < k; kp++) {
+                        bi = b[kp+k*j];
+#pragma GCC ivdep
+                        for (i = 0; i < m; i++) {
+                                c[i+ldc*j] += a[i+m*kp] * bi;
+                        }
+                }
+        }
+}
+
+void CINTdgemm_NN(FINT m, FINT n, FINT k,
+                  double *a, double *b, double *c)
+{
+        CINTdgemm_NN1(m, n, k, a, b, c, m);
+}
+
+void CINTdgemm_TN(FINT m, FINT n, FINT k,
+                  double *a, double *b, double *c)
+{
+        FINT i, j, kp;
+        double ci;
+        for (j = 0; j < n; j++) {
+                for (i = 0; i < m; i++) {
+                        ci = 0;
+#pragma GCC ivdep
+                        for (kp = 0; kp < k; kp++) {
+                                ci += a[kp+k*i] * b[kp+k*j];
+                        }
+                        c[i+m*j] = ci;
+                }
+        }
+}
+
+void CINTdgemm_NT(FINT m, FINT n, FINT k,
+                  double *a, double *b, double *c)
+{
+        FINT i, j, kp;
+        double bi;
+        for (j = 0; j < n; j++) {
+                for (i = 0; i < m; i++) {
+                        c[i+m*j] = 0;
+                }
+                for (kp = 0; kp < k; kp++) {
+                        bi = b[j+n*kp];
+#pragma GCC ivdep
+                        for (i = 0; i < m; i++) {
+                                c[i+m*j] += a[i+m*kp] * bi;
+                        }
+                }
+        }
+}
