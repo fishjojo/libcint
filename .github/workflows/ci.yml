@@ -8,9 +8,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-18.04]
+        os: [macos-latest, ubuntu-20.04]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
@@ -35,3 +35,4 @@ jobs:
           python test_cart2sph.py
           python test_c2s.py
           python test_cint4c1e.py
+          python test_int1e_grids.py

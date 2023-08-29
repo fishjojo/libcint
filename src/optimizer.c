@@ -320,14 +320,35 @@ void CINTOpt_set_log_maxc(CINTOpt *opt, FINT *atm, FINT natm,
 FINT CINTset_pairdata(PairData *pairdata, double *ai, double *aj, double *ri, double *rj,
                      double *log_maxci, double *log_maxcj,
                      FINT li_ceil, FINT lj_ceil, FINT iprim, FINT jprim,
-                     double rr_ij, double expcutoff)
+                     double rr_ij, double expcutoff, double *env)
 {
         FINT ip, jp, n;
-        double aij, eij, cceij;
-        // This estimation is based on the assumption that the two gaussian charge
-        // distributions are separated in space. If two gaussians are too close (the
-        // distance between gaussian product ij and gaussian product kl < 1), rr
-        double log_rr_ij = (li_ceil+lj_ceil+1) * approx_log(rr_ij+1) / 2;
+        double aij, eij, cceij, wj;
+        // Normally
+        //    (aj*d/sqrt(aij)+1)^li * (ai*d/sqrt(aij)+1)^lj
+        //    * pi^1.5/aij^{(li+lj+3)/2} * exp(-ai*aj/aij*rr_ij)
+        // is a good approximation for overlap integrals.
+        //    <~ (aj*d/aij+1/sqrt(aij))^li * (ai*d/aij+1/sqrt(aij))^lj * (pi/aij)^1.5
+        //    <~ (d+1/sqrt(aij))^(li+lj) * (pi/aij)^1.5
+        aij = ai[iprim-1] + aj[jprim-1];
+        double log_rr_ij = 1.7 - 1.5 * approx_log(aij);
+        double dist_ij = sqrt(rr_ij);
+        int lij = li_ceil + lj_ceil;
+        if (lij > 0) {
+#ifdef WITH_RANGE_COULOMB
+                double omega = env[PTR_RANGE_OMEGA];
+                if (omega < 0) {
+                        double r_guess = 8.;
+                        double omega2 = omega * omega;
+                        double theta = omega2 / (omega2 + aij);
+                        log_rr_ij += lij * approx_log(dist_ij + theta*r_guess + 1.);
+                } else {
+                        log_rr_ij += lij * approx_log(dist_ij + 1.);
+                }
+#else
+                log_rr_ij += lij * approx_log(dist_ij + 1.);
+#endif
+        }
         PairData *pdata;
 
         FINT empty = 1;
@@ -340,14 +361,15 @@ FINT CINTset_pairdata(PairData *pairdata, double *ai, double *aj, double *ri, do
                         pdata->cceij = cceij;
                         if (cceij < expcutoff) {
                                 empty = 0;
-                                pdata->rij[0] = (ai[ip]*ri[0] + aj[jp]*rj[0]) * aij;
-                                pdata->rij[1] = (ai[ip]*ri[1] + aj[jp]*rj[1]) * aij;
-                                pdata->rij[2] = (ai[ip]*ri[2] + aj[jp]*rj[2]) * aij;
+                                wj = aj[jp] * aij;
+                                pdata->rij[0] = ri[0] + wj * (rj[0]-ri[0]);
+                                pdata->rij[1] = ri[1] + wj * (rj[1]-ri[1]);
+                                pdata->rij[2] = ri[2] + wj * (rj[2]-ri[2]);
                                 pdata->eij = exp(-eij);
                         } else {
-                                pdata->rij[0] = 0;
-                                pdata->rij[1] = 0;
-                                pdata->rij[2] = 0;
+                                pdata->rij[0] = 1e18;
+                                pdata->rij[1] = 1e18;
+                                pdata->rij[2] = 1e18;
                                 pdata->eij = 0;
                         }
                 }
@@ -413,7 +435,7 @@ void CINTOpt_setij(CINTOpt *opt, FINT *ng,
                            + (ri[2]-rj[2])*(ri[2]-rj[2]);
 
                         empty = CINTset_pairdata(pdata, ai, aj, ri, rj, log_maxci, log_maxcj,
-                                                 li+ijkl_inc, lj, iprim, jprim, rr, expcutoff);
+                                                 li+ijkl_inc, lj, iprim, jprim, rr, expcutoff, env);
                         if (i == 0 && j == 0) {
                                 opt->pairdata[0] = pdata;
                                 pdata += iprim * jprim;
