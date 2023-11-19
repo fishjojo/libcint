@@ -6,6 +6,7 @@ INT1E = {
     'int1e_nuc'     : r'( \| nuc \| )',
     'int1e_rinv'    : r'( \| rinv \| )',
     'int2c2e'       : r'( \| r12 \| )',
+    'int1e_r2'      : r'( \| rc dot rc \| )',
 }
 
 INT2E = {
