@@ -124,6 +124,12 @@ extern CINTIntegralFunction int1e_r2_cart;
 extern CINTIntegralFunction int1e_r2_sph;
 extern CINTIntegralFunction int1e_r2_spinor;
 
+/* <i|RC DOT RC RC |j> */
+extern CINTOptimizerFunction int1e_r2r_optimizer;
+extern CINTIntegralFunction int1e_r2r_cart;
+extern CINTIntegralFunction int1e_r2r_sph;
+extern CINTIntegralFunction int1e_r2r_spinor;
+
 /* <i|RC DOT RC RC DOT RC |j> */
 extern CINTOptimizerFunction int1e_r4_optimizer;
 extern CINTIntegralFunction int1e_r4_cart;
