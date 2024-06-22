@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import ctypes
 import numpy
 
@@ -14,13 +15,16 @@ mol = gto.M(atom='H 0 0 0; H .2 .5 .8; H 1.9 2.1 .1; H 2.0 .3 1.4',
 H    S
    1990.8000000              1.0000000
 H    S
+      5.0250000              0.2709520              0.2
+      1.0130000              0.0                    0.5573680
+H    S
      80.8000000              0.0210870             -0.0045400              0.0000000     0.0000000
       3.3190000              0.3461290             -0.1703520              1.0000000     0.0000000
       0.9059000              0.0393780              0.1403820              0.0000000     1.0000000
 H    P
-      4.1330000              0.0868660#              0.0000000
-      1.2000000              0.0000000#              0.5000000
-      0.3827000              0.5010080#              1.0000000
+      4.1330000              0.0868660              0.0000000
+      1.2000000              0.0000000              0.5000000
+      0.3827000              0.5010080              1.0000000
 H    D
       1.0970000              1.0000000
 H    D
@@ -63,6 +67,7 @@ def run(intor, comp=1, suffix='_sph', thr=1e-9):
     args = (mol._atm.ctypes.data_as(ctypes.c_void_p), ctypes.c_int(mol.natm),
             mol._bas.ctypes.data_as(ctypes.c_void_p), ctypes.c_int(mol.nbas),
             mol._env.ctypes.data_as(ctypes.c_void_p), cintopt)
+    failed = False
     for i in range(mol.nbas):
         for j in range(mol.nbas):
             ref = mol.intor_by_shell(intor, [i,j], comp=comp)
@@ -79,10 +84,15 @@ def run(intor, comp=1, suffix='_sph', thr=1e-9):
                 mol._env.ctypes.data_as(ctypes.c_void_p))
             if numpy.linalg.norm(ref-buf) > thr:
                 print(intor, '| nopt', i, j, numpy.linalg.norm(ref-buf))#, ref, buf
+                failed = True
             #fn(buf.ctypes.data_as(ctypes.c_void_p),
             #   (ctypes.c_int*2)(i,j), *args)
             #if numpy.linalg.norm(ref-buf) > 1e-7:
             #    print('|', i, j, numpy.linalg.norm(ref-buf))
+    if failed:
+        print('failed')
+    else:
+        print('pass')
 
 run('int1e_ovlp')
 run('int1e_nuc')

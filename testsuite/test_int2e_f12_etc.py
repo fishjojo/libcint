@@ -3,7 +3,7 @@ import os
 import ctypes
 import numpy
 
-_cint = numpy.ctypeslib.load_library('libcint', os.path.abspath(os.path.join(__file__, '../../build')))
+_cint = ctypes.CDLL(os.path.abspath(os.path.join(__file__, '../../build/libcint.so')))
 
 from pyscf import gto, lib
 
@@ -38,8 +38,6 @@ def make_cintopt(atm, bas, env, intor):
 
 fn1 = getattr(_cint, 'cint2e_sph')
 fn2 = getattr(_cint, 'cint2e_yp_sph')
-fn3 = getattr(_cint, 'cint2e_coulerf_sph')
-fn4 = getattr(_cint, 'cint2e_coul_gtg_sph')
 cintopt1 = lib.c_null_ptr()
 cintopt1 = make_cintopt(mol._atm, mol._bas, mol._env, 'cint2e_yp_sph')
 
@@ -74,20 +72,4 @@ for i in range(mol.nbas):
                 if err > 1e-3:
                     print('yp', i, j, k, l, numpy.linalg.norm(ref-buf)/numpy.linalg.norm(ref))
                     #exit()
-                fn3(buf.ctypes.data_as(ctypes.c_void_p),
-                   (ctypes.c_int*4)(i,j,k,l),
-                    mol._atm.ctypes.data_as(ctypes.c_void_p), ctypes.c_int(mol.natm),
-                    mol._bas.ctypes.data_as(ctypes.c_void_p), ctypes.c_int(mol.nbas),
-                    mol._env.ctypes.data_as(ctypes.c_void_p), lib.c_null_ptr())
-                if numpy.linalg.norm(ref-buf) > 1e-5:
-                    print('coulerf', i, j, k, l, numpy.linalg.norm(ref-buf))
-                    exit()
-                fn4(buf.ctypes.data_as(ctypes.c_void_p),
-                   (ctypes.c_int*4)(i,j,k,l),
-                    mol._atm.ctypes.data_as(ctypes.c_void_p), ctypes.c_int(mol.natm),
-                    mol._bas.ctypes.data_as(ctypes.c_void_p), ctypes.c_int(mol.nbas),
-                    mol._env.ctypes.data_as(ctypes.c_void_p), lib.c_null_ptr())
-                if numpy.linalg.norm(ref-buf) > 1e-3:
-                    print('coul_gtg', i, j, k, l, numpy.linalg.norm(ref-buf))
-                    exit()
 print(max(yp_err))

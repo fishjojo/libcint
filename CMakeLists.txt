@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.5)
 project (cint C)
-set(cint_VERSION_MAJOR "5")
-set(cint_VERSION_MINOR "4")
-set(cint_VERSION_PATCH "0")
+set(cint_VERSION_MAJOR "6")
+set(cint_VERSION_MINOR "1")
+set(cint_VERSION_PATCH "1")
 set(cint_VERSION_TWEAK "0")
 set(cint_VERSION "${cint_VERSION_MAJOR}.${cint_VERSION_MINOR}.${cint_VERSION_PATCH}")
 set(cint_SOVERSION "${cint_VERSION_MAJOR}")
@@ -73,7 +73,7 @@ configure_file(
 set(cintSrc
   src/c2f.c src/cart2sph.c src/cint1e.c src/cint2e.c src/cint_bas.c
   src/fblas.c src/g1e.c src/g2e.c src/misc.c src/optimizer.c
-  src/fmt.c src/rys_wheeler.c src/eigh.c src/rys_roots.c
+  src/fmt.c src/rys_wheeler.c src/eigh.c src/rys_roots.c src/find_roots.c
   src/cint2c2e.c src/g2c2e.c src/cint3c2e.c src/g3c2e.c
   src/cint3c1e.c src/g3c1e.c src/breit.c
   src/cint1e_a.c src/cint3c1e_a.c
@@ -90,13 +90,17 @@ set(cintSrc
 if(WITH_RANGE_COULOMB)
 # defined in config.h
 #  add_definitions(-DWITH_RANGE_COULOMB)
-  message("Enabled WITH_RANGE_COULOMB")
+#  message("Enabled WITH_RANGE_COULOMB")
 endif(WITH_RANGE_COULOMB)
 
+if(WITH_POLYNOMIAL_FIT)
+  set(cintSrc ${cintSrc} src/polyfits.c src/sr_rys_polyfits.c)
+  add_definitions(-DWITH_POLYNOMIAL_FIT)
+  message("Enabled WITH_POLYNOMIAL_FIT")
+endif(WITH_POLYNOMIAL_FIT)
+
 if(WITH_COULOMB_ERF)
-  set(cintSrc ${cintSrc} src/g2e_coulerf.c src/cint2e_coulerf.c)
-  add_definitions(-DWITH_COULOMB_ERF)
-  message("Enabled WITH_COULOMB_ERF")
+  message("WITH_COULOMB_ERF is deprecated since v6.0")
 endif(WITH_COULOMB_ERF)
 
 if(WITH_F12)
@@ -106,12 +110,13 @@ if(WITH_F12)
 endif(WITH_F12)
 
 # Gaussian type geminal code are incorrect
-#if(WITH_GTG)
+if(WITH_GTG)
 #  set(cintSrc ${cintSrc} src/g2e_gtg.c src/cint2e_gtg.c src/cint3c2e_gtg.c
 #    src/cint2c2e_gtg.c)
 #  add_definitions(-DWITH_GTG)
 #  message("Enabled WITH_GTG. Note there are bugs in gtg type integrals")
-#endif(WITH_GTG)
+  message("WITH_GTG is deprecated since v6.0")
+endif(WITH_GTG)
 
 if(WITH_4C1E)
   set(cintSrc ${cintSrc} src/cint4c1e.c src/g4c1e.c)

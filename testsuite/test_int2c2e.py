@@ -3,8 +3,7 @@ import os
 import ctypes
 import numpy
 
-_cint = numpy.ctypeslib.load_library('libcint', os.path.abspath(os.path.join(__file__, '../../build')))
-#_cint4 = ctypes.cdll.LoadLibrary('libcint.so.4')
+_cint = ctypes.CDLL(os.path.abspath(os.path.join(__file__, '../../build/libcint.so')))
 
 from pyscf import gto, lib
 
@@ -59,7 +58,7 @@ def run(intor, comp=1, suffix='_sph', thr=1e-7):
         intor3 = 'c%s%s'%(intor,suffix)
     intor2 = 'c%s%s'%(intor,suffix)
     print(intor)
-    fn1 = getattr(_cint, intor)
+    fn1 = getattr(_cint, intor3)
     #fn2 = getattr(_cint, intor4)
     #cintopt = make_cintopt(mol._atm, mol._bas, mol._env, intor)
     cintopt = lib.c_null_ptr()
@@ -67,6 +66,7 @@ def run(intor, comp=1, suffix='_sph', thr=1e-7):
             mol._bas.ctypes.data_as(ctypes.c_void_p), ctypes.c_int(mol.nbas),
             mol._env.ctypes.data_as(ctypes.c_void_p), cintopt)
 
+    failed = False
     for i in range(mol.nbas):
         for j in range(mol.nbas):
             ref = mol.intor_by_shell(intor2, [i,j], comp=comp)
@@ -83,12 +83,16 @@ def run(intor, comp=1, suffix='_sph', thr=1e-7):
                 mol._env.ctypes.data_as(ctypes.c_void_p), lib.c_null_ptr())
             if numpy.linalg.norm(ref-buf) > thr:
                 print(intor, '| nopt', i, j, numpy.linalg.norm(ref-buf))#, ref, buf
-                exit()
+                failed = True
             fn1(buf.ctypes.data_as(ctypes.c_void_p),
                 (ctypes.c_int*2)(i,j), *args)
             if numpy.linalg.norm(ref-buf) > thr:
                 print(intor, '|', i, j, numpy.linalg.norm(ref-buf))
-                exit()
+                failed = True
+    if failed:
+        print('failed')
+    else:
+        print('pass')
 
 run('int2c2e')
 run('int2c2e_ip1', 3)
