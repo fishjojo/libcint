@@ -6,6 +6,7 @@ INT1E = {
     'int1e_nuc'     : r'( \| nuc \| )',
     'int1e_rinv'    : r'( \| rinv \| )',
     'int2c2e'       : r'( \| r12 \| )',
+    'int1e_r'       : r'( \| rc \| )',
     'int1e_r2'      : r'( \| rc dot rc \| )',
 }
 
@@ -32,7 +33,10 @@ def int1e_gen_dr(order):
             expr = re.sub(r'(\))', r'{}\1'.format(nabla), tmp, 1)
 
             intor_name = k + '_dr' + str(od[0]) + str(od[1])
-            print('    \'' + intor_name + '\'' + f'\t\t: ({3**order}, {3**order}),')
+            if k == 'int1e_r':
+                print('    \'' + intor_name + '\'' + f'\t\t: ({3**(order+1)}, {3**(order+1)}),')
+            else:
+                print('    \'' + intor_name + '\'' + f'\t\t: ({3**order}, {3**order}),')
             string += '  \'(\"' + intor_name + '\"    ' + expr + ')\n'
     return string
 
