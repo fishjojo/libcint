@@ -7,6 +7,8 @@ INT1E = {
     'int1e_rinv'    : r'( \| rinv \| )',
     'int2c2e'       : r'( \| r12 \| )',
     'int1e_r'       : r'( \| rc \| )',
+    'int1e_rr'      : r'( \| rc rc \| )',
+    'int1e_rrr'     : r'( \| rc rc rc \| )',
     'int1e_r2'      : r'( \| rc dot rc \| )',
 }
 
@@ -35,6 +37,10 @@ def int1e_gen_dr(order):
             intor_name = k + '_dr' + str(od[0]) + str(od[1])
             if k == 'int1e_r':
                 print('    \'' + intor_name + '\'' + f'\t\t: ({3**(order+1)}, {3**(order+1)}),')
+            elif k == 'int1e_rr':
+                print('    \'' + intor_name + '\'' + f'\t\t: ({3**(order+2)}, {3**(order+2)}),')
+            elif k == 'int1e_rrr':
+                print('    \'' + intor_name + '\'' + f'\t\t: ({3**(order+3)}, {3**(order+3)}),')
             else:
                 print('    \'' + intor_name + '\'' + f'\t\t: ({3**order}, {3**order}),')
             string += '  \'(\"' + intor_name + '\"    ' + expr + ')\n'
